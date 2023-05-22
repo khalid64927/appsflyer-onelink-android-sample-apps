@@ -1,16 +1,34 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdk 33
+    buildToolsVersion = "33.0.0"
+
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword '1234567'
+            storePassword '1234567'
+            storeFile file("../geolocator-signing-key")
+        }
+
+    }
 
     defaultConfig {
-        applicationId "com.appsflyer.onelink.appsflyeronelinkbasicapp"
+        applicationId "com.khalid.sample.geolocator"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 31
+        versionCode 87
+        versionName "2.0.0.beta1"
+
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+
+            }
+        }
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8

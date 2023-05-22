@@ -7,8 +7,11 @@ import com.appsflyer.deeplink.DeepLinkResult;
 import com.appsflyer.AppsFlyerConversionListener;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import androidx.annotation.NonNull;
@@ -25,6 +28,10 @@ public class AppsflyerBasicApp extends Application {
     // already processed, and the callback functionality for deep linking can be skipped.
     // When GCD or UDL finds this flag true it MUST set it to false before skipping.
     boolean deferred_deep_link_processed_flag = false;
+
+    static void toastL(Context context, String message){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onCreate() {
@@ -43,20 +50,26 @@ public class AppsflyerBasicApp extends Application {
                 DeepLinkResult.Status dlStatus = deepLinkResult.getStatus();
                 if (dlStatus == DeepLinkResult.Status.FOUND) {
                     Log.d(LOG_TAG, "Deep link found");
+                    toastL(getApplicationContext(), "Deep link found");
+
                 } else if (dlStatus == DeepLinkResult.Status.NOT_FOUND) {
                     Log.d(LOG_TAG, "Deep link not found");
+                    toastL(getApplicationContext(), "Deep link not found");
                     return;
                 } else {
                     // dlStatus == DeepLinkResult.Status.ERROR
                     DeepLinkResult.Error dlError = deepLinkResult.getError();
                     Log.d(LOG_TAG, "There was an error getting Deep Link data: " + dlError.toString());
+                    toastL(getApplicationContext(), "There was an error getting Deep Link data: " + dlError.toString());
                     return;
                 }
                 DeepLink deepLinkObj = deepLinkResult.getDeepLink();
                 try {
                     Log.d(LOG_TAG, "The DeepLink data is: " + deepLinkObj.toString());
+                    toastL(getApplicationContext(), "The DeepLink data is: " + deepLinkObj.toString());
                 } catch (Exception e) {
                     Log.d(LOG_TAG, "DeepLink data came back null");
+                    toastL(getApplicationContext(), "DeepLink data came back null");
                     return;
                 }
                 // An example for using is_deferred
@@ -64,10 +77,12 @@ public class AppsflyerBasicApp extends Application {
                     Log.d(LOG_TAG, "This is a deferred deep link");
                     if (deferred_deep_link_processed_flag == true) {
                         Log.d(LOG_TAG, "Deferred deep link was already processed by GCD. This iteration can be skipped.");
+                        toastL(getApplicationContext(), "Deferred deep link was already processed by GCD. This iteration can be skipped.");
                         deferred_deep_link_processed_flag = false;
                         return;
                     }
                 } else {
+                    toastL(getApplicationContext(), "This is a direct deep link");
                     Log.d(LOG_TAG, "This is a direct deep link");
                 }
                 // An example for getting deep_link_value
@@ -84,20 +99,25 @@ public class AppsflyerBasicApp extends Application {
                     if (dlData.has("deep_link_sub2")){
                         referrerId = deepLinkObj.getStringValue("deep_link_sub2");
                         Log.d(LOG_TAG, "The referrerID is: " + referrerId);
+                        toastL(getApplicationContext(), "The referrerID is: " + referrerId);
                     }  else {
                         Log.d(LOG_TAG, "deep_link_sub2/Referrer ID not found");
+                        toastL(getApplicationContext(), "deep_link_sub2/Referrer ID not found");
                     }
 
                     if (fruitName == null || fruitName.equals("")){
                         Log.d(LOG_TAG, "deep_link_value returned null");
+                        toastL(getApplicationContext(), "deep_link_value returned null");
                         fruitName = deepLinkObj.getStringValue("fruit_name");
                         if (fruitName == null || fruitName.equals("")) {
                             Log.d(LOG_TAG, "could not find fruit name");
+                            toastL(getApplicationContext(), "could not find fruit name");
                             return;
                         }
                         Log.d(LOG_TAG, "fruit_name is " + fruitName + ". This is an old link");
                     }
                     Log.d(LOG_TAG, "The DeepLink will route to: " + fruitName);
+                    toastL(getApplicationContext(), "The DeepLink will route to: " + fruitName);
                     // This marks to GCD that UDL already processed this deep link.
                     // It is marked to both DL and DDL, but GCD is relevant only for DDL
                     deferred_deep_link_processed_flag = true;

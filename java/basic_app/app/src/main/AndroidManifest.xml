@@ -9,18 +9,19 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".AppsflyerBasicApp"
+        android:name="com.appsflyer.onelink.appsflyeronelinkbasicapp.AppsflyerBasicApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ConversionDataActivity" />
-        <activity android:name=".PeachesActivity" />
-        <activity android:name=".BananasActivity" />
-        <activity android:name=".ApplesActivity" />
+        <activity android:exported="false" android:name="com.appsflyer.onelink.appsflyeronelinkbasicapp.ConversionDataActivity" />
+        <activity android:exported="false" android:name="com.appsflyer.onelink.appsflyeronelinkbasicapp.PeachesActivity" />
+        <activity android:exported="false" android:name="com.appsflyer.onelink.appsflyeronelinkbasicapp.BananasActivity" />
+        <activity android:exported="false" android:name="com.appsflyer.onelink.appsflyeronelinkbasicapp.ApplesActivity" />
         <activity
-            android:name=".MainActivity"
+            android:exported="true"
+            android:name="com.appsflyer.onelink.appsflyeronelinkbasicapp.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +45,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="onelink-basic-app.onelink.me"
+                    android:host="geofence-demo.onelink.me"
                     android:scheme="https" />
             </intent-filter>
         </activity>
